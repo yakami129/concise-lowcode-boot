@@ -1,0 +1,14 @@
+spring:
+  profiles: local
+logging:
+  config: classpath:log4j2/logback-local.xml
+---
+spring:
+  profiles: dev
+logging:
+  config: classpath:log4j2/logback-dev.xml
+---
+spring:
+  profiles: prod
+logging:
+  config: classpath:log4j2/logback-prod.xml

@@ -1,0 +1,52 @@
+grpc:
+  server:
+    port: ${GRPC_PORT}
+---
+grpc:
+  client:
+    domain-task:
+      address: 'discovery:///domain-task'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+---
+server:
+  port: ${SVC_PORT}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: ${RUN_ENV}
+  application:
+    name: domain-process
+  cloud:
+    nacos:
+      username: ${NACOS_USER}
+      password: ${NACOS_PWD}
+      discovery:
+        register-enabled: true
+        server-addr: ${NACOS}:${NACOS_PORT}
+        namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+        group: ${NACOS_GROUP}
+      config:
+        server-addr: ${NACOS}:${NACOS_PORT}
+        group: ${NACOS_GROUP}
+        namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        ext-config[0]:
+          group: ${NACOS_GROUP}
+          refresh: true
+          data-id: ${spring.application.name}.yaml
+---
+project:
+  packagePath: com.github.yakami.process.controller
+knife4j:
+  enable: true
+---
+camunda:
+  bpm:
+    enabled: true
+    auto-deployment-enabled: true
+    deployment-resource-pattern:
+      - 'classpath:/processes/*.bpmn'

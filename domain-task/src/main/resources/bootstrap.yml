@@ -1,0 +1,38 @@
+grpc:
+  server:
+    port: ${GRPC_PORT}
+
+server:
+  port: ${SVC_PORT}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: ${RUN_ENV}
+  application:
+    name: domain-task
+  cloud:
+    nacos:
+      username: ${NACOS_USER}
+      password: ${NACOS_PWD}
+      discovery:
+        register-enabled: true
+        server-addr: ${NACOS}:${NACOS_PORT}
+        namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+        group: ${NACOS_GROUP}
+        metadata:
+          gRPC:
+            port: ${GRPC_PORT}
+      config:
+        server-addr: ${NACOS}:${NACOS_PORT}
+        group: ${NACOS_GROUP}
+        namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        ext-config[0]:
+          group: ${NACOS_GROUP}
+          refresh: true
+          data-id: ${spring.application.name}.yaml
+---
+project:
+  packagePath: com.github.yakami.process.controller

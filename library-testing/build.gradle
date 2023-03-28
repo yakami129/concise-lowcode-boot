@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+description = "测试容器"
+group = 'com.github.yakami.library.testing'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+bootJar.enabled = false
+jar.enabled = true
+
+dependencies {
+    compile ("org.springframework.boot:spring-boot-starter-test:${springBootVersion}"){
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

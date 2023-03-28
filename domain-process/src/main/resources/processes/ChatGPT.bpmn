@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_04n9vd5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="ChatGPTDemo" name="ChatGPTDemo" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0d38qzd</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_00km5b7" name="ChatGPT" camunda:type="external" camunda:topic="chatgpt-topic">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="apiKey" value="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" />
+          <camunda:property name="apiHost" value="https://api.openai.com" />
+          <camunda:property name="proxyHost" value="127.0.0.1" />
+          <camunda:property name="proxyPort" value="33210" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0d38qzd</bpmn:incoming>
+      <bpmn:outgoing>Flow_10sl1go</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0d38qzd" sourceRef="StartEvent_1" targetRef="Activity_00km5b7" />
+    <bpmn:serviceTask id="Activity_0v1cyqc" name="Notion" camunda:type="external" camunda:topic="notion-topic">
+      <bpmn:incoming>Flow_10sl1go</bpmn:incoming>
+      <bpmn:outgoing>Flow_0l13qsm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_10sl1go" sourceRef="Activity_00km5b7" targetRef="Activity_0v1cyqc" />
+    <bpmn:endEvent id="Event_18rv99b">
+      <bpmn:incoming>Flow_0l13qsm</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0l13qsm" sourceRef="Activity_0v1cyqc" targetRef="Event_18rv99b" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ChatGPTDemo">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00km5b7_di" bpmnElement="Activity_00km5b7">
+        <dc:Bounds x="280" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v1cyqc_di" bpmnElement="Activity_0v1cyqc">
+        <dc:Bounds x="450" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18rv99b_di" bpmnElement="Event_18rv99b">
+        <dc:Bounds x="622" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0d38qzd_di" bpmnElement="Flow_0d38qzd">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="280" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10sl1go_di" bpmnElement="Flow_10sl1go">
+        <di:waypoint x="380" y="117" />
+        <di:waypoint x="450" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0l13qsm_di" bpmnElement="Flow_0l13qsm">
+        <di:waypoint x="550" y="117" />
+        <di:waypoint x="622" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

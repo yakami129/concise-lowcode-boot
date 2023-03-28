@@ -1,0 +1,27 @@
+server:
+  port: ${SVC_PORT}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: ${RUN_ENV}
+  application:
+    name: platform-gateway
+  cloud:
+    nacos:
+      username: ${NACOS_USER}
+      password: ${NACOS_PWD}
+      discovery:
+        server-addr: ${NACOS}:${NACOS_PORT}
+        namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+        group: ${NACOS_GROUP}
+      config:
+        server-addr: ${NACOS}:${NACOS_PORT}
+        group: ${NACOS_GROUP}
+        namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        ext-config[0]:
+          group: ${NACOS_GROUP}
+          refresh: true
+          data-id: ${spring.application.name}.yaml

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0hcr3ai" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="UserTaskDemo" name="TaskB" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1rfx42e</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_0qmhz90" name="TaskA">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${createTaskListener}" event="create" id="createTaskListener" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1rfx42e</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p12hat</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1rfx42e" sourceRef="StartEvent_1" targetRef="Activity_0qmhz90" />
+    <bpmn:userTask id="Activity_0ps1uyu" name="TaskB">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${createTaskListener}" event="create" id="createTaskListener" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0p12hat</bpmn:incoming>
+      <bpmn:outgoing>Flow_17f5y6n</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0p12hat" sourceRef="Activity_0qmhz90" targetRef="Activity_0ps1uyu" />
+    <bpmn:userTask id="Activity_0xsxfhe" name="TaskC">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${createTaskListener}" event="create" id="createTaskListener" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_17f5y6n</bpmn:incoming>
+      <bpmn:outgoing>Flow_0uje45t</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_17f5y6n" sourceRef="Activity_0ps1uyu" targetRef="Activity_0xsxfhe" />
+    <bpmn:endEvent id="Event_11au1r7">
+      <bpmn:incoming>Flow_0uje45t</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0uje45t" sourceRef="Activity_0xsxfhe" targetRef="Event_11au1r7" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="UserTaskDemo">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0qmhz90_di" bpmnElement="Activity_0qmhz90">
+        <dc:Bounds x="240" y="110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ps1uyu_di" bpmnElement="Activity_0ps1uyu">
+        <dc:Bounds x="400" y="110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xsxfhe_di" bpmnElement="Activity_0xsxfhe">
+        <dc:Bounds x="560" y="110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_11au1r7_di" bpmnElement="Event_11au1r7">
+        <dc:Bounds x="722" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1rfx42e_di" bpmnElement="Flow_1rfx42e">
+        <di:waypoint x="188" y="150" />
+        <di:waypoint x="240" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p12hat_di" bpmnElement="Flow_0p12hat">
+        <di:waypoint x="340" y="150" />
+        <di:waypoint x="400" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17f5y6n_di" bpmnElement="Flow_17f5y6n">
+        <di:waypoint x="500" y="150" />
+        <di:waypoint x="560" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0uje45t_di" bpmnElement="Flow_0uje45t">
+        <di:waypoint x="660" y="150" />
+        <di:waypoint x="722" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+description = "rpc基础设施-通用层"
+group = 'com.github.yakami.library.library.infrastructure.common'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+bootJar.enabled = false
+jar.enabled = true
+
+dependencies {
+
+    compileOnly "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}"
+    compileOnly "org.springframework.boot:spring-boot-starter-web"
+
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-starter-aop"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.springframework.boot:spring-boot-configuration-processor"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+
+    // JSON解析相关依赖
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
+    // 日志相关依赖
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+
+    // 工具类相关依赖
+    compile "cn.hutool:hutool-all:${hutoolVersion}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.apache.commons:commons-collections4:${commonsCollections4Version}"
+    compile "commons-codec:commons-codec:${commonscodecVersion}"
+    compile "commons-fileupload:commons-fileupload:${commonsFileuploadVersion}"
+    compile "commons-io:commons-io:${commonsIoVersion}"
+    compile "com.google.guava:guava:${guavaVersion}"
+    compile "com.github.jsqlparser:jsqlparser:${jsqlparserVersion}"
+    compile "de.ruedigermoeller:fst:${fstVersion}"
+    compile "com.google.guava:guava:${guavaVersion}"
+    compile "org.hibernate:hibernate-validator:${javaxValidation}"
+    compile "javax.servlet:javax.servlet-api:${servletApiVersion}"
+    compile "com.alibaba.fastjson2:fastjson2:${fastjson2Version}"
+
+    // http
+    compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+
+    // 重试工具
+    compile "com.github.rholder:guava-retrying:${guavaRetryingVersion}"
+
+    // xss工具
+    compile "org.jsoup:jsoup:${jsoupVersion}"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

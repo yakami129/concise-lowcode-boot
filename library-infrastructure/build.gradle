@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+description = "基础设施"
+group = 'com.github.yakami.library.infrastructure'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+bootJar.enabled = false
+jar.enabled = true
+
+dependencies {
+
+    compile project(":library-infrastructure-common")
+
+    compile "org.springframework.boot:spring-boot-starter-jdbc"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-mail"
+    compile "org.springframework.boot:spring-boot-starter-data-redis"
+//    compile "org.springframework.boot:spring-boot-starter-data-elasticsearch"
+//    compile "org.springframework.boot:spring-boot-starter-amqp"
+
+    // 数据库驱动和连接池相关依赖
+    compile "com.alibaba:druid:${druidVersion}"
+    compile "mysql:mysql-connector-java:${mysqlVersion}"
+
+    // swagger  相关依赖
+    compile "com.github.xiaoymin:knife4j-openapi2-spring-boot-starter:${knife4jVersion}"
+    compile "io.springfox:springfox-boot-starter:${swaggerVersion}"
+
+    // mybatis相关依赖
+    compile "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}"
+    compile "com.baomidou:mybatis-plus:${mybatisPlusVersion}"
+    compile "org.mybatis:mybatis:${mybatisVersion}"
+
+    // minio
+    compile "io.minio:minio:${minioVersion}"
+
+    // cosid
+    compile "me.ahoo.cosid:cosid-spring-boot-starter:${cosidVersion}"
+    compile "me.ahoo.cosid:cosid-spring-redis:${cosidVersion}"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+description = "流程引擎调度平台"
+group = 'com.github.yakami.process'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+dependencies {
+    implementation project(":library-infrastructure")
+    implementation project(":library-infrastructure-rpc")
+    
+    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:7.17.0'
+    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:7.17.0'
+
+    testImplementation project(":library-testing")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
