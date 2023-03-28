@@ -1,0 +1,110 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT&allowMultiQueries=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PWD}
+    hikari:
+      connection-test-query: 'SELECT 1'
+      connection-timeout: 30000
+      idle-timeout: 180000
+      max-lifetime: 1800000
+      maximum-pool-size: 20
+      minimum-idle: 10
+      pool-name: user-hikariCP
+
+
+---
+spring:
+  redis:
+    database: ${REDIS_DATABASE}
+    password: ${REDIS_PWD}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    pool:
+      max-active: 18
+    lettuce:
+      pool:
+        max-active: ${REDIS_MAX_ACTIVE}
+        max-wait: -1
+        min-idle: 1
+        max-idle: ${REDIS_MAX_IDLE}
+    connect-timeout: 100000
+
+---
+project:
+  packagePath: com.github.yakami.process.controller
+knife4j:
+  enable: true
+
+---
+grpc:
+  client:
+    domain-task:
+      address: 'discovery:///domain-task'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+---
+camunda:
+  bpm:
+    webapp:
+      index-redirect-enabled: true
+    admin-user:
+      id: lowcode
+      password: 123qweASD
+    auto-deployment-enabled: true
+    deployment-resource-pattern:
+      - 'classpath:/processes/*.bpmn'
+---
+cosid:
+  namespace: ${spring.application.name}
+  machine:
+    enabled: true
+    #      stable: true
+    #      machine-bit: 10
+    #      instance-id: ${HOSTNAME}
+    distributor:
+      type: redis
+    #        manual:
+    #          machine-id: 0
+  snowflake:
+    enabled: true
+    #    epoch: 1577203200000
+    clock-backwards:
+      spin-threshold: 10
+      broken-threshold: 2000
+    share:
+      clock-sync: true
+      friendly: true
+    provider:
+      order_item:
+        #        timestamp-bit:
+        sequence-bit: 12
+      snowflake:
+        sequence-bit: 12
+      safeJs:
+        machine-bit: 3
+        sequence-bit: 9
+  segment:
+    enabled: true
+    mode: chain
+    chain:
+      safe-distance: 5
+      prefetch-worker:
+        core-pool-size: 2
+        prefetch-period: 1s
+    distributor:
+      type: redis
+    share:
+      offset: 0
+      step: 100
+    provider:
+      order:
+        offset: 10000
+        step: 100
+      longId:
+        offset: 10000
+        step: 100

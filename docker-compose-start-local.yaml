@@ -1,0 +1,113 @@
+version: '3'
+
+services:
+
+   platform-registry:
+      image: nacos/nacos-server:v2.2.0-slim
+      container_name: platform-registry
+      networks:
+        - concise
+      environment:
+        - PREFER_HOST_MODE=hostname
+        - MODE=standalone
+      volumes:
+        - ./operating-logs/:/home/nacos/logs
+      ports:
+        - "8848:8848"
+        - "9848:9848"
+      healthcheck:
+        test: ["CMD", "curl -f 'http://localhost:8848/nacos/' || exit 1"]
+        interval: 5s
+        timeout: 5s
+        retries: 30
+      restart: always
+
+   platform-prometheus:
+      container_name: platform-prometheus
+      image: prom/prometheus:latest
+      networks:
+        - concise
+      volumes:
+        - ./operating-config/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml
+      ports:
+        - "9090:9090"
+      depends_on:
+        - platform-registry
+      restart: on-failure
+
+   platform-grafana:
+      container_name: platform-grafana
+      image: grafana/grafana:latest
+      networks:
+        - concise
+      ports:
+        - 3000:3000
+      restart: on-failure
+
+   config-init:
+       container_name: config-init
+       image: concise/config-init:latest
+       networks:
+         - concise
+       env_file:
+         - "${ENV_FILE:-operating-config/local/configmap.env}"
+       depends_on:
+         platform-registry:
+            condition: service_started
+       restart: on-failure
+
+   mysql:
+      image: mysql:8.0.32
+      pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
+      restart: always
+      volumes:
+        - ./.data/mysql:/var/lib/mysql
+      ports:
+        - 3306:3306
+      environment:
+        - MYSQL_ROOT_PASSWORD=concise
+        - TZ=Asia/Shanghai
+      command: --default-authentication-plugin=mysql_native_password
+        --character-set-server=utf8mb4
+        --collation-server=utf8mb4_general_ci
+        --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION
+        --lower_case_table_names=2
+      networks:
+        - concise
+
+   redis:
+      image: redis:7.0.8
+      pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
+      restart: always
+      command:
+         [
+             "redis-server",
+             "--appendonly",
+             "yes",
+             "--requirepass",
+             "lowcode",
+         ]
+      ports:
+        - "6379:6379"
+      volumes:
+        - ./.data/redis:/data
+      environment:
+        - TZ=Asia/Shanghai
+      networks:
+        - concise
+
+   db-migration:
+     container_name: db-migration
+     image: concise/db-migration:latest
+     networks:
+       - concise
+     env_file:
+       - "${ENV_FILE:-operating-config/local/configmap.env}"
+     depends_on:
+       mysql:
+          condition: service_started
+     restart: on-failure
+
+networks:
+  concise:
+    driver: bridge

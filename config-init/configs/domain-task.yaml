@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT&allowMultiQueries=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PWD}
+    hikari:
+      connection-test-query: 'SELECT 1'
+      connection-timeout: 30000
+      idle-timeout: 180000
+      max-lifetime: 1800000
+      maximum-pool-size: 20
+      minimum-idle: 10
+      pool-name: user-hikariCP
+
+## redis 配置
+---
+spring:
+  redis:
+    database: ${REDIS_DATABASE}
+    password: ${REDIS_PWD}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    pool:
+      max-active: 18
+    lettuce:
+      pool:
+        max-active: ${REDIS_MAX_ACTIVE}
+        max-wait: -1
+        min-idle: 1
+        max-idle: ${REDIS_MAX_IDLE}
+    connect-timeout: 100000
+
+## camunda 流程引擎外部任务配置
+---
+camunda:
+  bpm:
+    client:
+      base-url: http://localhost:8001/engine-rest # The URL pointing to the Camunda Platform Runtime REST API
+      worker-id: spring-boot-client # Identifies the worker towards the Engine
+
+## 插件扫描地址配置，配置为绝对路径
+---
+plugin:
+  plugin-path: ../plugins

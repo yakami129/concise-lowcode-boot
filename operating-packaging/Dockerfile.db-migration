@@ -1,0 +1,19 @@
+FROM flyway/flyway:9.11
+LABEL maintainer=""
+
+ENV MYSQL_USER="root" \
+    MYSQL_PWD="x" \
+    PRODUCT_SHORT_NAME="concise" \
+    MYSQL_HOST="127.0.0.1" \
+    MYSQL_PORT="3306"
+
+ENV PRODUCT_SHORT_NAME="concise"
+
+USER root
+COPY ./operating-config/flyway-entrypoint.sh ./
+
+RUN chmod -R a+x flyway-entrypoint.sh
+
+ENTRYPOINT ["flyway-entrypoint.sh"]
+
+COPY ./db-migration ./sql/

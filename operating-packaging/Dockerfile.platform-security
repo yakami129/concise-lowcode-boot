@@ -1,0 +1,19 @@
+FROM gradle:6.8.3-jdk11 AS builder
+
+WORKDIR /app
+COPY ./ .
+
+WORKDIR /app/platform-security
+RUN gradle build -x test
+
+
+FROM amazoncorretto:11
+
+ARG BUILD_VERSION
+ENV BUILD_VERSION ${BUILD_VERSION}
+
+WORKDIR /app
+
+COPY --from=builder /app/platform-security/build/libs/*.jar /app/app.jar
+EXPOSE 7002
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app/app.jar"]

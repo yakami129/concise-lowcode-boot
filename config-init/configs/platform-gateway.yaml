@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: domain-user
+          uri: lb://domain-process
+          predicates:
+           - Path=/api/process/**
+          filters:
+           - StripPrefix=2
+        - id: domain-example
+          uri: lb://domain-task
+          predicates:
+           - Path=/api/task/**
+          filters:
+           - StripPrefix=2
+        - id: platform-security
+          uri: lb://platform-security
+          predicates:
+           - Path=/api/security/**
+          filters:
+           - StripPrefix=2

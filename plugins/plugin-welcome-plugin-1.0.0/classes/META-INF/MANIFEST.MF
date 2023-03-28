@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Plugin-Class: io.github.yakami.lowcode.plugin.impl.WelcomePlugin
+Plugin-Id: welcome-plugin
+Plugin-Version: task ':plugins:example-lowcode-plugin:jar' property 'arc
+ hiveVersion'
+Plugin-Provider: yakami129
+Plugin-Dependencies: 
+

@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  domain-process:
+    image: ${DISTRO:-concise}/domain-example:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: operating-packaging/Dockerfile.domain-process
+
+  domain-task:
+    image: ${DISTRO:-concise}/domain-user:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: operating-packaging/Dockerfile.domain-task
+
+  platform-gateway:
+    image: ${DISTRO:-concise}/platform-gateway:${TAG:-latest}
+    build:
+       context: .
+       dockerfile: operating-packaging/Dockerfile.platform-gateway
+
+  platform-security:
+    image: ${DISTRO:-concise}/platform-security:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: operating-packaging/Dockerfile.platform-security
+
+  config-init:
+    image: ${DISTRO:-concise}/config-init:${TAG:-latest}
+    build:
+        context: .
+        dockerfile: operating-packaging/Dockerfile.config-init
+
+  db-migration:
+    image: ${DISTRO:-concise}/db-migration:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: operating-packaging/Dockerfile.db-migration
+

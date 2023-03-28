@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT&allowMultiQueries=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PWD}
+    hikari:
+      connection-test-query: 'SELECT 1'
+      connection-timeout: 30000
+      idle-timeout: 180000
+      max-lifetime: 1800000
+      maximum-pool-size: 300
+      minimum-idle: 150
+      pool-name: user-hikariCP
+
+
+---
+spring:
+  redis:
+    database: ${REDIS_DATABASE}
+    password: ${REDIS_PWD}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    pool:
+      max-active: 18
+    lettuce:
+      pool:
+        max-active: ${REDIS_MAX_ACTIVE}
+        max-wait: -1
+        min-idle: 1
+        max-idle: ${REDIS_MAX_IDLE}
+    connect-timeout: 100000
+
+
+---
+dubbo:
+  application:
+    name: ${spring.application.name}
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${NACOS}:${NACOS_PORT}
+    group: dubbo-registry
+    parameters:
+      namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}
+  config-center:
+    address: nacos://${NACOS}:${NACOS_PORT}
+    group: dubbo-config-center
+    parameters:
+      namespace: ${NACOS_NS_PREFIX}-${RUN_ENV}

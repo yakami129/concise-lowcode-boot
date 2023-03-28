@@ -1,0 +1,13 @@
+rootProject.name = 'concise-lowcode-boot'
+
+include 'domain-process'
+include 'domain-task'
+include 'library-infrastructure-common'
+include 'library-infrastructure'
+include 'library-infrastructure-rpc'
+include 'library-testing'
+include 'platform-gateway'
+include 'platform-security'
+
+
+
